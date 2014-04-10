@@ -55,5 +55,4 @@ def create_image_mosaic(image_url_list):
     img.save('mosaic.png')
 
 
-
 create_image_mosaic(get_user_top_albums_images('ricardodani', '1month'))
