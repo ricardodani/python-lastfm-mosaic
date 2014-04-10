@@ -1,5 +1,4 @@
 Pillow==2.4.0
-gnureadline==6.2.5
 ipdb==0.8
 ipython==2.0.0
 lastfmapi==0.1
