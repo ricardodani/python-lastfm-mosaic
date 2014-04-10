@@ -54,5 +54,5 @@ def create_image_mosaic(image_url_list):
             y += 1
     img.save('mosaic.png')
 
-
-create_image_mosaic(get_user_top_albums_images('ricardodani', '1month'))
+# available periods: overall | 7day | 1month | 3month | 6month | 12month
+create_image_mosaic(get_user_top_albums_images('ricardodani', '6month'))
