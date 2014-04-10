@@ -5,3 +5,4 @@ lastfmapi==0.1
 python-memcached==1.53
 requests==2.2.1
 wsgiref==0.1.2
+django>=1.6
