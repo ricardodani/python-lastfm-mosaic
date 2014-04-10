@@ -34,20 +34,23 @@ def get_user_top_albums_images(user, period='overall'):
         # image qualities -> 0 - 3
         return album['image'][2]['#text']
 
-    images_url = _get_user_top_albums_response(user=user, period=period, limit=60)
+    images_url = _get_user_top_albums_response(
+        user=user, period=period, limit=60)
     return filter(lambda x: 'default_album_medium.png' not in x,
                   map(get_img, images_url))[:50]
 
 
 def create_image_mosaic(image_url_list):
-    img = Image.new('RGB', (1260, 1260/2))
+    '''Saves a mosaic image with the images the given urls.
+    '''
+    img = Image.new('RGB', (1260, 1260 / 2))
     x, y = 0, 0
-    for i in range(len(image_url_list)):
-        res = requests.get(image_url_list[i])
+    for i, url in enumerate(image_url_list):
+        res = requests.get(url)
         stream = io.BytesIO(res.content)
         alb = Image.open(stream)
-        img.paste(alb, (y*126, x*126))
-        if (i+1) % 10 == 0:
+        img.paste(alb, (y * 126, x * 126))
+        if (i + 1) % 10 == 0:
             x += 1
             y = 0
         else:
