@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 
-import io
 import lastfmapi
 import memcache
-import requests
+from cStringIO import StringIO
+from octopus import TornadoOctopus
 from PIL import Image
+
 
 LASTFM_API_KEY = 'c971171e6f5976ddae7717ce53ea2ee6'
 MEMCACHE_ADDRESS = '127.0.0.1:11211'
 
 mc = memcache.Client([MEMCACHE_ADDRESS], debug=0)
 api = lastfmapi.LastFmApi(LASTFM_API_KEY)
+
+images = []
 
 
 def _get_user_top_albums_response(**kwargs):
@@ -43,16 +46,30 @@ def get_user_top_albums_images(user, period='overall'):
 def create_image_mosaic(image_url_list):
     '''Saves a mosaic image with the images the given urls.
     '''
-    img = Image.new('RGB', (1260, 1260 / 2))
+
+    otto = TornadoOctopus(
+        concurrency=50, auto_start=True, cache=True, expiration_in_seconds=60
+    )
+
+    for url in image_url_list:
+        otto.enqueue(url, handle_url_response)
+
+    otto.wait(0)
+
+    out_img = Image.new('RGB', (1260, 1260 / 2))
     x, y = 0, 0
-    for i, url in enumerate(image_url_list):
-        res = requests.get(url)
-        stream = io.BytesIO(res.content)
-        alb = Image.open(stream)
-        img.paste(alb, (y * 126, x * 126))
+
+    for i, img in enumerate(images):
+        alb = Image.open(StringIO(img))
+        out_img .paste(alb, (y * 126, x * 126))
         if (i + 1) % 10 == 0:
             x += 1
             y = 0
         else:
             y += 1
-    img.save('mosaic.png')
+
+    out_img .save('mosaic.png')
+
+
+def handle_url_response(url, response):
+    images.append(response.content)
