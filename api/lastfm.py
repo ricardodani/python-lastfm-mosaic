@@ -3,10 +3,11 @@
 import uuid
 import lastfmapi
 import memcache
-from django.conf import settings
 from cStringIO import StringIO
-from octopus import TornadoOctopus
 from PIL import Image
+
+from django.conf import settings
+from octopus import TornadoOctopus
 
 
 def _get_user_top_albums_response(**kwargs):
