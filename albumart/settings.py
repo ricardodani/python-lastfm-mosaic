@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,3 +81,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LASTFM_API_KEY = 'c971171e6f5976ddae7717ce53ea2ee6'
+MEMCACHE_ADDRESS = '127.0.0.1:11211'
