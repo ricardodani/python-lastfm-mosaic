@@ -52,4 +52,4 @@ class Command(BaseCommand):
                                        options['height'])
         else:
             print 'You must to provide a username: \n' \
-                  './manage.py -u <username>'
+                  './manage.py -u <username> [options]'
